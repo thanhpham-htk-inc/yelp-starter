@@ -5,6 +5,8 @@
    * element. */
   CreatingEntryView.render = function($entry) {
     // TODO
+    $entry.html(EntryView.template({'creating' : true ,'entries': null,'activeEntryData': null}))
+    Util.addEventCreatingEntryView($entry);
   };
 
   window.CreatingEntryView = CreatingEntryView;

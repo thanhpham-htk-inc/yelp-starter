@@ -13,6 +13,25 @@
    */
   EntryModel.loadAll = function(callback) {
     // TODO
+    var request = new XMLHttpRequest();
+
+    request.addEventListener('readystatechange', function(event)
+    {
+      if (this.readyState === 4 )
+      {
+        if(this.status === STATUS_OK )
+        {
+          callback(null, JSON.parse( this.responseText));
+        } 
+        else 
+        {
+          callback( this.responseText , null );
+        }
+      }
+    });
+
+    request.open('GET', ENTRIES_URL, true);
+    request.send();
   };
 
   /* Add the given entry to the list of entries. The entry must *not* have
@@ -22,8 +41,33 @@
    *  error -- the error that occurred or NULL if no error occurred
    *  entry -- the entry added, with an id attribute
    */
-  EntryModel.add = function(entry, callback) {
+  EntryModel.add = function(entryAdd, callback) {
     // TODO
+    var request = new XMLHttpRequest();
+
+    request.addEventListener('readystatechange', function(event)
+    {
+      if (this.readyState === 4 )
+      {
+        if(this.status === STATUS_OK )
+        {
+          callback(null, JSON.parse( this.responseText));
+        } 
+        else 
+        {
+          callback( this.responseText , null );
+        }
+      }
+    });
+    var stringRequest = {
+        name : entryAdd.name,
+        description : entryAdd.description,
+        address : entryAdd.address
+      };
+
+    request.open('POST', ENTRIES_URL , true);
+    request.setRequestHeader("Content-Type",'application/json');
+    request.send(JSON.stringify(stringRequest));
   };
 
   /* Update the given entry. The entry must have an id attribute that
@@ -34,6 +78,31 @@
    */
   EntryModel.update = function(entry, callback) {
     // TODO
+    var request = new XMLHttpRequest();
+
+    request.addEventListener('readystatechange', function(event)
+    {
+      if (this.readyState === 4 )
+      {
+        if(this.status === STATUS_OK )
+        {
+          callback(null);
+        } 
+        else 
+        {
+          callback( this.responseText);
+        }
+      }
+    });
+    var stringRequest = {
+        name : entry.name,
+        description : entry.description,
+        address : entry.address
+      };
+
+    request.open('POST', ENTRIES_URL + "/" + entry.id , true);    
+    request.setRequestHeader("Content-Type",'application/json');
+    request.send(JSON.stringify(stringRequest));
   };
 
   /* Deletes the entry with the given id.
@@ -42,7 +111,25 @@
    *  error -- the error that occurred or NULL if no error occurred
    */
   EntryModel.remove = function(id, callback) {
-    // TODO
+    var request = new XMLHttpRequest();
+
+    request.addEventListener('readystatechange', function(event)
+    {
+      if (this.readyState === 4 )
+      {
+        if(this.status === STATUS_OK )
+        {
+          callback(null);
+        } 
+        else 
+        {
+          callback( this.responseText);
+        }
+      }
+    });
+
+    request.open('POST', ENTRIES_URL + "/"+ id +"/delete" , true);
+    request.send();
   };
 
   window.EntryModel = EntryModel;
